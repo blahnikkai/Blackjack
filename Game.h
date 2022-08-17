@@ -31,21 +31,17 @@ public:
         playerPtrs = vector<Player *>();
         bettorPtrs = vector<Bettor *>();
 
-        playerPtrs.push_back(&human);
         bettorPtrs.push_back(&human);
         for (int i = 0; i < totalPlayers - 2; ++i) {
-            auto * extra = new Bettor("Extra " + std::to_string(i + 1));
-            playerPtrs.push_back(extra);
-            bettorPtrs.push_back(extra);
+            bettorPtrs.push_back(new Bettor("Extra " + std::to_string(i + 1)));
         }
+        std::copy(bettorPtrs.begin(), bettorPtrs.end(), std::back_inserter(playerPtrs));
         playerPtrs.push_back(&dealer);
     }
 
     void playGame() {
-        bool playing = true;
-        while(playing) {
+        while(true)
             playRound();
-        }
     }
 
     void playRound() {
@@ -56,16 +52,24 @@ public:
         allTurn();
         okContinue();
         finalCompare();
+        eraseBroke();
         allDiscard();
         okContinue();
+        checkBettorsEmpty();
     }
 
+    void checkBettorsEmpty() {
+        if(bettorPtrs.empty()) {
+            cout << "\nAll bettors are out of money\n"
+                    "\n-------- GAME OVER --------\n\n";
+            exit(0);
+        }
+    }
 
     void allBet() {
         for(Bettor * bettorPtr: bettorPtrs)
             cout << bettorPtr->getName() << " has $" << bettorPtr->getMoney() << "\n";
         for(Bettor * bettorPtr: bettorPtrs) {
-            if(bettorPtr == &dealer) continue;
             bettorPtr->betDecision();
             cout << bettorPtr->getName() << " bets $" << bettorPtr->getBet() << "\n";
         }
@@ -83,6 +87,7 @@ public:
     void allTurn() {
         dealer.setHole(false);
         for(Player * playerPtr: playerPtrs) {
+            okContinue();
             cout << "\n---- " << playerPtr->getName() << "'s turn ----\n";
             turn(*playerPtr);
         }
@@ -107,9 +112,17 @@ public:
                     cout << bettorPtr->getName() << " tied\n";
                     break;
             }
-            if(bettorPtr->getMoney() == 0) {
-                bettorPtrs.erase();
-            }
+        }
+    }
+
+//  if a player has no money, remove them from vectors
+    void eraseBroke() {
+        if(std::erase_if(bettorPtrs, [] (Bettor *b) {
+            return b->getMoney() == 0;
+        }) != 0) {
+            playerPtrs.clear();
+            std::copy(bettorPtrs.begin(), bettorPtrs.end(), std::back_inserter(playerPtrs));
+            playerPtrs.push_back(&dealer);
         }
     }
 
@@ -119,19 +132,18 @@ public:
     }
 
     void turn(Player & player) {
-        int decision = player.turnDecision();
-        if(decision == 0) {
-            cout << player.getName() << " stands\n";
-            cout << player << "\n";
-            return;
-        }
-        cout << player.getName() << " hits\n";
-        player.addCard(draw.dealCard(discard));
         cout << player << "\n";
         if(player.getHandValue() > 21) {
             cout << player.getName() << " busted!\n";
             return;
         }
+        int decision = player.turnDecision();
+        if(decision == 0) {
+            cout << player.getName() << " stands\n";
+            return;
+        }
+        cout << player.getName() << " hits\n";
+        player.addCard(draw.dealCard(discard));
         turn(player);
     }
 

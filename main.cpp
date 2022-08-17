@@ -48,4 +48,5 @@ int main() {
 //input problems, pressing enter twice, printing instructions twice?
 //change addCards so that it automatically moves the vector instead of copying it
 //user input filtering for negatives and non integer, you lose when 0
-//
+//find better way of doing bettors and players
+//change recursion?

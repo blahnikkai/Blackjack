@@ -58,17 +58,9 @@ public:
         return strm;
     }
 
-    int getRank() const {
-        return rank;
-    }
-
-    bool getHigh() const {
-        return high;
-    }
-
-    void setHigh(bool h) {
-        high = h;
-    }
+    int getRank() const {return rank;}
+    bool getHigh() const {return high;}
+    void setHigh(bool h) {high = h;}
 
 private:
     int rank;

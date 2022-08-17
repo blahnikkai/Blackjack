@@ -11,11 +11,11 @@
 std::string userInput() {
     std::string input;
     std::getline(std::cin, input);
-    if(input == "quit") exit(1);
+    if(input == "quit") exit(0);
     return input;
 }
 
-bool okContinue() {
+void okContinue() {
     std::cout << "Type ok to continue\n";
     string input = userInput();
     if(input != "ok") okContinue();

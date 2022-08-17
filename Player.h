@@ -89,17 +89,13 @@ public:
     }
 
     const string & getName() const {return name;}
-
     void setHole(bool h) {hole = h;}
 
 
 private:
-
     bool hole{};
     string name;
     vector<Card> hand;
-
-
 };
 
 class Bettor : public Player {
@@ -118,8 +114,6 @@ public:
     }
 
     int getBet() const {return bet;}
-//    void setBet(int b) {bet = b;}
-
     int getMoney() const {return money;}
     void setMoney(int m) {money = m;}
 
@@ -142,11 +136,15 @@ public:
             b = std::stoi(input);
         }
         catch(std::invalid_argument & e) {
-            cout << "Bet must be an integer\n";
+            cout << "Your bet must be an integer\n";
             return betDecision();
         }
         if(b > getMoney()) {
-            cout << "Bet cannot be more than your current money\n";
+            cout << "You cannot bet more than your current money\n";
+            return betDecision();
+        }
+        if(b <= 0) {
+            cout << "Your bet must be a positive integer\n";
             return betDecision();
         }
         bet = b;
