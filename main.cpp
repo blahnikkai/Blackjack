@@ -36,7 +36,7 @@ void testHighAce() {
 }
 
 int main() {
-    Game game{3};
+    Game game{5};
     game.playGame();
 
     return 0;
