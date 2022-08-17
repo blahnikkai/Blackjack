@@ -69,7 +69,7 @@ public:
     }
 
     virtual int turnDecision() {
-        okContinue();
+        enterContinue();
         if(getHandValue() < 17) return 1;
         else return 0;
     }

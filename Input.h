@@ -15,10 +15,10 @@ std::string userInput() {
     return input;
 }
 
-void okContinue() {
-    std::cout << "Type ok to continue\n";
+void enterContinue() {
+    std::cout << "Press enter to continue\n";
     string input = userInput();
-    if(input != "ok") okContinue();
+    if(input != "") enterContinue();
 }
 
 #endif //POKER_INPUT_H

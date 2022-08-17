@@ -47,14 +47,14 @@ public:
     void playRound() {
         cout << "\n-------- NEW ROUND --------\n\n";
         allBet();
-        okContinue();
+        enterContinue();
         allDeal();
         allTurn();
-        okContinue();
+        enterContinue();
         finalCompare();
         eraseBroke();
         allDiscard();
-        okContinue();
+        enterContinue();
         checkBettorsEmpty();
     }
 
@@ -87,7 +87,7 @@ public:
     void allTurn() {
         dealer.setHole(false);
         for(Player * playerPtr: playerPtrs) {
-            okContinue();
+            enterContinue();
             cout << "\n---- " << playerPtr->getName() << "'s turn ----\n";
             turn(*playerPtr);
         }
